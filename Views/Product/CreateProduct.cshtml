@@ -1,0 +1,82 @@
+﻿@model PokolokoShop.Models.Product
+
+@{
+    ViewData["Title"] = "CreateProduct";
+}
+@{ 
+    List<Brand> brands = ((List<Brand>)ViewBag.Brands);
+    List<SubCategory> subCategories = ((List<SubCategory>)ViewBag.ProductSubcategories);
+    
+}
+
+
+<h1>CreateProduct</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form action="~/Product/AddProduct" method="post" id="form-product">
+            <div class="form-group">
+                <label class="control-label">Name</label>
+                <input name="Name" class="form-control" value="@ViewBag.Name" />
+                <span class="text-danger">@ViewBag.NERR</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Price</label>
+                <input name="Price" class="form-control" value="@ViewBag.Price" />
+                <span class="text-danger">@ViewBag.PERR</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Quantity</label>
+                <input name="Quantity" class="form-control" value="@ViewBag.Quantity" />
+                <span class="text-danger">@ViewBag.QERR</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Material</label>
+                <input name="Material" class="form-control" value="@ViewBag.Material" />
+                <span class="text-danger">@ViewBag.MERR</span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Description</label>
+                <input name="Description" value="@ViewBag.Description" class="form-control" />
+                <span class="text-danger">@ViewBag.DERR</span>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label">Brand</label>
+                <select class="form-control" name="Brand">
+                    @foreach (Brand brand in brands)
+                    {
+                        <option value="@brand.BrandId">@brand.BrandName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Sub Category</label>
+                <select class="form-control" name="SubCategory">
+                    @foreach (SubCategory sub in subCategories)
+                    {
+                        <option value="@sub.SubCategoryId">@sub.SubCateName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Create Product</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

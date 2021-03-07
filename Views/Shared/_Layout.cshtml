@@ -1,0 +1,81 @@
+﻿@{
+    @using Newtonsoft.Json;
+    @using Microsoft.AspNetCore.Http;
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+    List<PokolokoShop.Models.Category> categories = (List<PokolokoShop.Models.Category>)JsonConvert.DeserializeObject<List<PokolokoShop.Models.Category>>(HttpContextAccessor.HttpContext.Session.GetString("Cate"));
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Pokoloco Shop</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/custom.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3 navbar">
+            <div class="container">
+
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Pokoloko Shop</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+                    <ul class="navbar">
+                        <li class="subnav">
+                            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        @foreach (Category cate in categories)
+                        {
+                            <li class="subnav">
+                                <button class="subnavbtn">@cate.CateName</button>
+                                <div class="subnav-content">
+                                    @foreach (SubCategory sub in cate.SubCategory)
+                                    {
+                                        @*<form action="~/Product/SearchProductByCategoryAndSubCategory">
+                                                <button type="submit">
+                                                    <input type="hidden" name="idSubString" value="@sub.ProductCategoryId"/>
+                                                    <p>@sub.Name</p>
+                                                </button>
+                                            </form>*@
+
+                                        <a href="~/Product/SearchProductByCategoryAndSubCategory?idSubString=@sub.SubCategoryId">@sub.SubCateName</a>
+                                    }
+                                </div>
+                            </li>
+                        }
+
+                        <li class="subnav">
+                            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="subnav">
+                            <a asp-area="" asp-controller="Home" asp-action="People">People</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - Pokoloko Shop Modified By KhangHVvippro123 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

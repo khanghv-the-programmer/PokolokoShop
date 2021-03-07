@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewData["Title"] = "AddBigImg";
+}
+
+<h1>AddBigImg</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form action="~/Product/SaveBigImg" method="post" id="form-product">
+            <input type="hidden" name="ID" value="@ViewBag.IDIMG" />
+            <div class="form-group">
+                <label class="control-label">Large Image</label>
+                <p><label for="file" class="control-label" style="cursor: pointer;">Click Here to Add Large Image</label></p>
+                <input type="file" accept="image/gif, image/jpeg, image/png" onchange="loadFileThumb(event)" name="bigimage" id="file" style="display: none;"><br />
+            </div>
+            <img id="outputthumb" width="200" /><br /><br /><br /><br />
+            <div class="form-group">
+                <button type="submit" name="action" value="save" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="action" value="skip" class="btn btn-primary">Skip</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+
+
+
+    var loadFileThumb = function (event) {
+        var image = document.getElementById('outputthumb');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    };
+
+</script>

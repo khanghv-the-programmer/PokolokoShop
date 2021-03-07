@@ -1,0 +1,143 @@
+﻿@model List<PokolokoShop.Models.Product>
+@{
+    ViewData["Title"] = "Products In " + ViewBag.NameSub;
+}
+
+<h1>Products In @ViewBag.NameSub</h1>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            Product List
+        </div>
+        <div class="col-6">
+            <a href="~/Product/CreateProduct">Add a product</a>
+        </div>
+
+    </div>
+
+    <br />
+    <br />
+    @{
+        int currentPage = (int)ViewBag.CurrentPage;
+        int totalPage = (int)ViewBag.TotalPage;
+    }
+    <h1>Page @(currentPage + 1)</h1>
+
+    @if (Model.Count() > 0)
+    {
+        <ul>
+            @foreach (PokolokoShop.Models.Product p in Model)
+            {
+            <li style="display:inline">
+                <form action="~/Home/ProductDetail" style="display:inline">
+                    <input type="hidden" name="pId" value="@p.ProductId" />
+                    <button type="submit" class="btn-link" style="width: 22%; height:40%; text-align:center; margin: 5px; padding: 5px">
+                        @if (p.ProductImage != null)
+                        {
+                            <img style="width: 50%" class="img-thumbnail" src=" @p.ProductImage.ElementAt(0).IdimageNavigation.ThumnailImg" />
+                        }
+                        else
+                        {
+                            <img style="width: 50%" class="img-thumbnail" src="https://prowiki.info/images/e/e7/Pikachu_10.png" />
+                        }
+
+                        <h6 style="width: 100%">@p.ProductName</h6>
+
+                        <p style="width: 100%">@p.Price</p>
+
+                    </button>
+
+                </form>
+            </li>
+            }
+        </ul>
+        if (currentPage != 0)
+        {
+            if (currentPage != 1)
+            {
+                <form action="~/Product/SearchProductByCategoryAndSubCategory" method="get" style="display:inline">
+                    <input type="hidden" name="idSubString" value="@ViewBag.IdSub" />
+                    <button type="submit" name="getPage" value="0">1</button>
+
+                </form>
+                if (currentPage != 2)
+                {
+                    <p style="display:inline">...</p>
+                }
+
+            }
+
+
+            <form action="~/Product/SearchProductByCategoryAndSubCategory" method="get" style="display:inline">
+                <input type="hidden" name="idSubString" value="@ViewBag.IdSub" />
+                <button type="submit" name="getPage" value="@(currentPage - 1)">@currentPage</button>
+
+            </form>
+            <form action="~/Product/SearchProductByCategoryAndSubCategory" method="get" style="display:inline">
+                <input type="hidden" name="idSubString" value="@ViewBag.IdSub" />
+                <button type="submit" name="getPage" value="@(currentPage)" disabled>@(currentPage + 1)</button>
+
+            </form>
+
+        }
+        else
+        {
+            <form action="~/Product/SearchProductByCategoryAndSubCategory" method="get" style="display:inline">
+                <input type="hidden" name="idSubString" value="@ViewBag.IdSub" />
+                <button type="submit" name="getPage" value="@(currentPage)" disabled>@(currentPage + 1)</button>
+
+            </form>
+        }
+        for (int i = currentPage + 1; i < currentPage + 5; i++)
+        {
+            int k = totalPage - currentPage;
+            if (k >= 5)
+            {
+                <form action="~/Product/SearchProductByCategoryAndSubCategory" method="get" style="display:inline">
+                    <input type="hidden" name="idSubString" value="@ViewBag.IdSub" />
+                    <button type="submit" name="getPage" value="@i">@(i + 1)</button>
+
+                </form>
+
+
+            }
+            else
+            {
+                for (int j = 0; j < k; j++)
+                {
+                    if (i + j >= totalPage)
+                    {
+                        break;
+                    }
+                    <form action="~/Product/SearchProductByCategoryAndSubCategory" method="get" style="display:inline">
+                        <input type="hidden" name="idSubString" value="@ViewBag.IdSub" />
+                        <button type="submit" name="getPage" value="@(i+j)">@(i + j + 1)</button>
+
+                    </form>
+
+                }
+                break;
+            }
+
+
+        }
+
+        if (currentPage + 5 < totalPage)
+        {
+            <p style="display:inline">...</p>
+            <form action="~/Product/SearchProductByCategoryAndSubCategory" method="get" style="display:inline">
+                <input type="hidden" name="idSubString" value="@ViewBag.IdSub" />
+                <button type="submit" name="getPage" value="@(totalPage - 1)">@totalPage</button>
+            </form>
+        }
+
+
+
+    }
+    else
+    {
+        <h2>Nothing here!</h2>
+    }
+
+</div>
